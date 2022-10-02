@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Conway\'s Game of Life</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
+</resources>
