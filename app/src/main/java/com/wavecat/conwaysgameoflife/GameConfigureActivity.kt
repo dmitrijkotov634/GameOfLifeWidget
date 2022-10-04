@@ -39,9 +39,13 @@ class GameConfigureActivity : AppCompatActivity() {
             preferences.edit {
                 val width = binding.width.value.toInt()
                 val height = binding.height.value.toInt()
+                val resetInterval = binding.resetInterval.value.toInt()
 
                 putInt("width$appWidgetId", width)
                 putInt("height$appWidgetId", height)
+                putInt("resetInterval$appWidgetId", resetInterval)
+
+                putLong("timestamp$appWidgetId", System.currentTimeMillis())
 
                 val field = GameOfLifeField(
                     BooleanArray(width * height) { Random.nextBoolean() },

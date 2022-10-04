@@ -1,6 +1,5 @@
 package com.wavecat.conwaysgameoflife
 
-import android.app.AlarmManager
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -12,7 +11,6 @@ import android.graphics.Color
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.content.edit
-import androidx.core.content.getSystemService
 import androidx.preference.PreferenceManager
 import kotlin.random.Random
 
@@ -46,6 +44,9 @@ class GameAppWidgetProvider : AppWidgetProvider() {
 
             val width = preferences.getInt("width$id", 1)
             val height = preferences.getInt("height$id", 1)
+            val resetInterval = preferences.getInt("resetInterval$id", 0)
+
+            val timestamp = preferences.getLong("timestamp$id", 0)
 
             val field = GameOfLifeField.createFromString(
                 fieldString,
@@ -53,7 +54,7 @@ class GameAppWidgetProvider : AppWidgetProvider() {
                 height
             )
 
-            val views = RemoteViews(context.packageName, R.layout.widget).apply {
+            val views = RemoteViews(context.packageName, R.layout.game_widget).apply {
                 val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
                 bitmap.eraseColor(Color.TRANSPARENT)
@@ -74,14 +75,20 @@ class GameAppWidgetProvider : AppWidgetProvider() {
                     }
                 }
 
-                if (newField.fieldEquals(field))
-                    newField = GameOfLifeField(
-                        BooleanArray(width * height) { Random.nextBoolean() },
-                        width,
-                        height
-                    )
-
                 preferences.edit {
+                    if (newField.fieldEquals(field)
+                        || ((System.currentTimeMillis() - timestamp) > resetInterval * 60000
+                                && resetInterval > 0
+                                )
+                    ) {
+                        newField = GameOfLifeField(
+                            BooleanArray(width * height) { Random.nextBoolean() },
+                            width,
+                            height
+                        )
+                        putLong("timestamp$id", System.currentTimeMillis())
+                    }
+
                     putString(id.toString(), newField.saveToString())
                     apply()
                 }
@@ -98,15 +105,6 @@ class GameAppWidgetProvider : AppWidgetProvider() {
 
             appWidgetManager.updateAppWidget(id, views)
         }
-
-        if (appWidgetIds.isNotEmpty()) {
-            val alarmManager = context.getSystemService<AlarmManager>()
-            alarmManager?.set(
-                AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + 5000,
-                pendingIntent
-            )
-        }
     }
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
@@ -117,6 +115,8 @@ class GameAppWidgetProvider : AppWidgetProvider() {
                 remove(id.toString())
                 remove("width$id")
                 remove("height$id")
+                remove("timestamp$id")
+                remove("resetInterval$id")
                 apply()
             }
         }

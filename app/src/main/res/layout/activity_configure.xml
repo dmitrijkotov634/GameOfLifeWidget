@@ -13,7 +13,7 @@
         android:layout_marginEnd="8dp"
         android:stepSize="10.0"
         android:valueFrom="10.0"
-        android:valueTo="300.0"
+        android:valueTo="500.0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,10 +27,24 @@
         android:layout_marginEnd="8dp"
         android:stepSize="10.0"
         android:valueFrom="10.0"
-        android:valueTo="300.0"
+        android:valueTo="500.0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/width" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/reset_interval"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:stepSize="10.0"
+        android:valueFrom="0.0"
+        android:valueTo="180.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -64,5 +78,15 @@
         app:layout_constraintEnd_toEndOf="@+id/height"
         app:layout_constraintStart_toStartOf="@+id/height"
         app:layout_constraintTop_toBottomOf="@+id/height" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_interval"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reset_interval" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

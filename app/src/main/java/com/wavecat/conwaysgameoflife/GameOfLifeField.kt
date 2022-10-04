@@ -1,6 +1,7 @@
 package com.wavecat.conwaysgameoflife
 
-class GameOfLifeField(val field: BooleanArray, val width: Int, val height: Int) {
+
+class GameOfLifeField(private val field: BooleanArray, val width: Int, val height: Int) {
 
     fun saveToString(): String {
         return field.joinToString(separator = "") {
@@ -8,7 +9,7 @@ class GameOfLifeField(val field: BooleanArray, val width: Int, val height: Int) 
         }
     }
 
-    fun set(x: Int, y: Int, value: Boolean) {
+    operator fun set(x: Int, y: Int, value: Boolean) {
         field[y * width + x] = value
     }
 
@@ -23,9 +24,9 @@ class GameOfLifeField(val field: BooleanArray, val width: Int, val height: Int) 
             repeat(width) { x ->
                 if (get(x, y)) {
                     val near = near(x, y)
-                    field.set(x, y, near == 2 || near == 3)
+                    field[x, y] = near == 2 || near == 3
                 } else {
-                    field.set(x, y, near(x, y) == 3)
+                    field[x, y] = near(x, y) == 3
                 }
             }
         }
