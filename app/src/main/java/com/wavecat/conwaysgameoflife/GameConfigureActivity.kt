@@ -35,6 +35,10 @@ class GameConfigureActivity : AppCompatActivity() {
             AppWidgetManager.INVALID_APPWIDGET_ID
         ) ?: AppWidgetManager.INVALID_APPWIDGET_ID
 
+        binding.width.value = preferences.getInt("width$appWidgetId", 10).toFloat()
+        binding.height.value = preferences.getInt("height$appWidgetId", 10).toFloat()
+        binding.resetInterval.value = preferences.getInt("resetInterval$appWidgetId", 0).toFloat()
+
         binding.floatingActionButton.setOnClickListener {
             preferences.edit {
                 val width = binding.width.value.toInt()

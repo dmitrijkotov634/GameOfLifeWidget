@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.graphics.ColorUtils
@@ -35,20 +34,14 @@ class BlockAppWidgetProvider : AppWidgetProvider() {
 
         appWidgetIds.forEach { id ->
             val views = RemoteViews(context.packageName, R.layout.block_widget).apply {
-                val bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-
-                bitmap.eraseColor(
-                    ColorUtils.HSLToColor(
+                setInt(
+                    R.id.block, "setBackgroundColor", ColorUtils.HSLToColor(
                         floatArrayOf(
                             Random.nextInt(360).toFloat(),
                             .9F,
                             .5F
                         )
                     )
-                )
-
-                setImageViewBitmap(
-                    R.id.block, bitmap
                 )
 
                 setOnClickPendingIntent(
